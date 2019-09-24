@@ -68,64 +68,63 @@ public:
 	{
 		this->callback = func;
 	};
-	//virtual void addAction(std::function<bool(float)> func)
-	//{
-	//	this->func2 = func;
-	//};
 
-
-	bool execute()
+	Status execute()
 	{
-		//check if its empty(no function stored)
-		if (callback)
+	/*	if (callback)
 		{
 			return	callback();
 		}
 		else
-			return false;
+			return false;*/
+			
+		Status status;
+		//check if its empty(no function stored)
+		if (callback)
+		{
+			status = callback();
+		}
+		else
+		{	//error no leaf
+			status = Status::FAILURE;
+		}
+		return status;
 	}
-
-	//virtual void OnInitialize(){}
-	//virtual void onTerminate(Status status){}
-	//virtual Status Execute() = 0;
-	//Status Tick()
-	//{
-	////	if (m_status == Status::BH_INVALID)
-	////	{
-	////		OnInitialize();
-	////	}
-	/////*	m_status = Execute();
-	////	if (m_status != Status::BH_RUNNING)
-	////	{
-	////		onTerminate(m_status);
-	////	}*/
-	////	return m_status;
-	//}
 };
 
 class Composite :public  Behavior
 {
 protected:
-	vector<Behavior> m_children;
+	vector<Behavior*> m_children;
 public:
-	void AddChildren(Behavior child)
+	void AddChildren(Behavior& child)
+	{
+		m_children.push_back(&child);
+	}
+	/*void AddChildren(Behavior child)
 	{
 		m_children.push_back(child);
-	}
+	}*/
 	//void RemoveChild(Behavior child)
 	//{
-	//	m_childre.erase(child);
+	//	for (size_t i = 0; i < m_children.size(); i++)
+	//	{
+	//		if (c == child)
+	//		{
+	//			m_children.erase(m_children.begin() + i);
+	//		}
+	//	}
 	//}
 };
 class Sequence :public Composite
 {
 public:
-	void func();
+	Status func();
 };
 
 class Selector :public Composite
 {
 public:
-	void func();
+	Status func();
 };
 
