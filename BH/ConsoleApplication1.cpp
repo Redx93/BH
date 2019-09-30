@@ -74,43 +74,54 @@ class Simple
 {
 private:
 	Action action_b;
-	Selector selector;
+	Selector *root;
+	BT bt;
 public:
-	Simple() {
-		//Selector selector;
-		Sequence sequence;
+	Simple() 
+	{
+		{
+			root = &bt.GetSelector();
+			Sequence& sequence = bt.GetSequence();
 
-		selector.AddChildren(sequence);
-		Behavior roam = Behavior(std::bind(&Action::Roam, std::ref(action_b)));
-		selector.AddChildren(roam);
+			root->AddChildren(sequence);
+			Behavior& roam = bt.GetAction();
+			roam.addAction(std::bind(&Action::Roam, std::ref(action_b)));
 
-		Behavior enemynear = Behavior(std::bind(&Action::Enemynearby, std::ref(action_b)));
-		sequence.AddChildren(enemynear);
-		Selector selector2;
-		sequence.AddChildren(selector2);
-		Sequence sequence2;
+			//Behavior roam = Behavior(std::bind(&Action::Roam, std::ref(action_b)));
+			root->AddChildren(roam);
 
-		selector2.AddChildren(sequence2);
-		Behavior chase = Behavior(std::bind(&Action::Chase, std::ref(action_b)));
-		selector2.AddChildren(chase);
+			Behavior& enemynear = bt.GetAction();
+			enemynear.addAction(std::bind(&Action::Enemynearby, std::ref(action_b)));
+			sequence.AddChildren(enemynear);
+			Selector& selector2 = bt.GetSelector();
+			sequence.AddChildren(selector2);
+			Sequence& sequence2 = bt.GetSequence();
 
-		Behavior inrange = Behavior(std::bind(&Action::InAttackRange, std::ref(action_b)));
-		Behavior attack = Behavior(std::bind(&Action::Attack, std::ref(action_b)));
-		sequence2.AddChildren(inrange);
-		sequence2.AddChildren(attack);
+			selector2.AddChildren(sequence2);
+			Behavior& chase = bt.GetAction();
+			chase.addAction(std::bind(&Action::Chase, std::ref(action_b)));
+			selector2.AddChildren(chase);
+
+			Behavior& inrange = bt.GetAction();
+			inrange.addAction(std::bind(&Action::InAttackRange, std::ref(action_b)));
+			Behavior& attack = bt.GetAction();
+			attack.addAction(std::bind(&Action::Attack, std::ref(action_b)));
+			sequence2.AddChildren(inrange);
+			sequence2.AddChildren(attack);
+		}
+		root->func();
+		action_b.InRange = true;
+		std::cout << "*************" << std::endl;
+		root->func();
 	}
 	void callfunction() {
 
-		selector.func();
-		action_b.InRange = true;
-		std::cout << "*************" << std::endl;
-		selector.func();
 	}
 };
 
 int main()
 {
-	Action action_b;
+	//Action action_b;
 	//BT bt;
 	//auto selector = bt.GetRoot();
 	////auto selector = bt.AddChildren(Selector());
@@ -124,18 +135,18 @@ int main()
 	//sequence2->AddChildren(Behavior(std::bind(&Action::InAttackRange, std::ref(action_b))));
 	//sequence2->AddChildren(Behavior(std::bind(&Action::Attack, std::ref(action_b))));
 
-	/*Selector selector;
-	Sequence sequence;
+	/*Selector& root = bt.GetSelector();
+	Sequence& sequence = bt.GetSequence();
 
-	selector.AddChildren(sequence);
+	root.AddChildren(sequence);
 	Behavior roam = Behavior(std::bind(&Action::Roam, std::ref(action_b)));
-	selector.AddChildren(roam);
+	root.AddChildren(roam);
 	
 	Behavior enemynear = Behavior(std::bind(&Action::Enemynearby, std::ref(action_b)));
 	sequence.AddChildren(enemynear);
-	Selector selector2;
+	Selector&selector2 = bt.GetSelector();
 	sequence.AddChildren(selector2);
-	Sequence sequence2;
+	Sequence &sequence2 = bt.GetSequence();
 
 	selector2.AddChildren(sequence2);
 	Behavior chase = Behavior(std::bind(&Action::Chase, std::ref(action_b)));
@@ -144,13 +155,12 @@ int main()
 	Behavior inrange = Behavior(std::bind(&Action::InAttackRange, std::ref(action_b)));
 	Behavior attack = Behavior(std::bind(&Action::Attack, std::ref(action_b)));
 	sequence2.AddChildren(inrange);
-	sequence2.AddChildren(attack);
+	sequence2.AddChildren(attack);*/
 
-	
-	selector.func();
-	action_b.InRange = true;
-	std::cout << "*************" << std::endl;
-	selector.func();*/
+	//root.func();
+	//action_b.InRange = true;
+	//std::cout << "*************" << std::endl;
+	//root.func();
 
 	Simple s;
 	s.callfunction();
