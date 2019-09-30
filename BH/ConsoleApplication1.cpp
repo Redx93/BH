@@ -70,7 +70,43 @@ public:
 	}
 };
 
+class Simple
+{
+private:
+	Action action_b;
+	Selector selector;
+public:
+	Simple() {
+		//Selector selector;
+		Sequence sequence;
 
+		selector.AddChildren(sequence);
+		Behavior roam = Behavior(std::bind(&Action::Roam, std::ref(action_b)));
+		selector.AddChildren(roam);
+
+		Behavior enemynear = Behavior(std::bind(&Action::Enemynearby, std::ref(action_b)));
+		sequence.AddChildren(enemynear);
+		Selector selector2;
+		sequence.AddChildren(selector2);
+		Sequence sequence2;
+
+		selector2.AddChildren(sequence2);
+		Behavior chase = Behavior(std::bind(&Action::Chase, std::ref(action_b)));
+		selector2.AddChildren(chase);
+
+		Behavior inrange = Behavior(std::bind(&Action::InAttackRange, std::ref(action_b)));
+		Behavior attack = Behavior(std::bind(&Action::Attack, std::ref(action_b)));
+		sequence2.AddChildren(inrange);
+		sequence2.AddChildren(attack);
+	}
+	void callfunction() {
+
+		selector.func();
+		action_b.InRange = true;
+		std::cout << "*************" << std::endl;
+		selector.func();
+	}
+};
 
 int main()
 {
@@ -88,7 +124,7 @@ int main()
 	//sequence2->AddChildren(Behavior(std::bind(&Action::InAttackRange, std::ref(action_b))));
 	//sequence2->AddChildren(Behavior(std::bind(&Action::Attack, std::ref(action_b))));
 
-	Selector selector;
+	/*Selector selector;
 	Sequence sequence;
 
 	selector.AddChildren(sequence);
@@ -114,8 +150,10 @@ int main()
 	selector.func();
 	action_b.InRange = true;
 	std::cout << "*************" << std::endl;
-	selector.func();
+	selector.func();*/
 
+	Simple s;
+	s.callfunction();
 	system("pause");
 	return 0;
 }

@@ -95,11 +95,11 @@ public:
 class Composite :public  Behavior
 {
 protected:
-	vector<Behavior*> m_children;
+	vector<Behavior> m_children;
 public:
-	void AddChildren(Behavior& child)
+	void AddChildren(Behavior child)
 	{
-		m_children.push_back(&child);
+		m_children.push_back(child);
 	}
 	/*void AddChildren(Behavior child)
 	{

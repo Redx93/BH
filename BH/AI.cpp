@@ -17,14 +17,14 @@ Status Sequence::func()
 		status != Status::FAILURE &&// if fail dont go further down
 		status != Status::RUNNING ; i++) //if Running, we are not done with the task til its succeeded
 	{
-		Selector* selector = dynamic_cast<Selector*>(m_children[i]);
+		Selector* selector = dynamic_cast<Selector*>(&m_children[i]);
 		if (selector)
 		{
 			status = selector->func(); // safe to call
 		}
 		else {//we got a leaf
 
-			status = m_children[i]->execute();
+			status = m_children[i].execute();
 		}
 
 	}
@@ -59,14 +59,14 @@ Status Selector::func()
 		status != Status::SUCCESS &&// if we succeed lets return it
 		status != Status::RUNNING; i++) //if Running, we are not done with the task til its succeeded
 	{
-		Sequence* sequence = dynamic_cast<Sequence*>(m_children[i]);
+		Sequence* sequence = dynamic_cast<Sequence*>(&m_children[i]);
 		if (sequence)
 		{
 			status = sequence->func(); // safe to call
 		}
 		else {//we got a leaf
 
-			status = m_children[i]->execute();
+			status = m_children[i].execute();
 		}
 
 	}
