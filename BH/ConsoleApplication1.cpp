@@ -110,6 +110,10 @@ public:
 			sequence2.AddChildren(attack);
 		}
 	}
+	~Simple()
+	{
+		//delete this->root;
+	}
 };
 
 int main()
@@ -154,7 +158,7 @@ int main()
 	//action_b.InRange = true;
 	//std::cout << "*************" << std::endl;
 	//root.func();
-
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	{
 	Simple s;
 	s.root->func();

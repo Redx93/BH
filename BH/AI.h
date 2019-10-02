@@ -115,6 +115,10 @@ public:
 		m_children.emplace_back(&child);
 	}
 	Status func();
+	~Sequence()
+	{
+
+	}
 };
 
 class Selector :public Behavior
@@ -127,30 +131,57 @@ public:
 		m_children.emplace_back(&child);
 	}
 	Status func();
+	~Selector()
+	{
+	
+	}
+
 };
 
 
 class BT
 {
 private:
-	vector<Sequence> sequence;
-	vector<Selector> selector;
-	vector<Behavior> action;
+	vector<Sequence*> sequence;
+	vector<Selector*> selector;
+	vector<Behavior*> action;
 public:
 	Sequence& GetSequence() {
 		Sequence* temp = new Sequence();
-		sequence.emplace_back(*temp);
+		sequence.emplace_back(temp);
 		return *temp;
 	}
 	Selector& GetSelector() {
 		Selector* temp = new Selector();
-		selector.emplace_back(*temp);
+		selector.emplace_back(temp);
 		return *temp;
 	}
 	Behavior& GetAction()
 	{
 		Behavior* temp = new Behavior();
-		action.emplace_back(*temp);
+		action.emplace_back(temp);
 		return *temp;
+	}
+
+	~BT()
+	{
+		for (vector<Sequence*>::iterator pObj = sequence.begin();
+			pObj != sequence.end(); ++pObj) {
+			delete* pObj; // Note that this is deleting what pObj points to,
+						  // which is a pointer
+		}
+
+		for (vector<Selector*>::iterator pObj = selector.begin();
+			pObj != selector.end(); ++pObj) {
+			delete* pObj; // Note that this is deleting what pObj points to,
+						  // which is a pointer
+		}
+
+		for (vector<Behavior*>::iterator pObj = action.begin();
+			pObj != action.end(); ++pObj) {
+			delete* pObj; // Note that this is deleting what pObj points to,
+						  // which is a pointer
+		}
+
 	}
 };
