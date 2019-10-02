@@ -72,11 +72,11 @@ public:
 
 class Simple
 {
-private:
-	Action action_b;
-	Selector *root;
+private:	
 	BT bt;
 public:
+	Selector* root;
+	Action action_b;
 	Simple() 
 	{
 		{
@@ -109,13 +109,6 @@ public:
 			sequence2.AddChildren(inrange);
 			sequence2.AddChildren(attack);
 		}
-		root->func();
-		action_b.InRange = true;
-		std::cout << "*************" << std::endl;
-		root->func();
-	}
-	void callfunction() {
-
 	}
 };
 
@@ -162,8 +155,15 @@ int main()
 	//std::cout << "*************" << std::endl;
 	//root.func();
 
+	{
 	Simple s;
-	s.callfunction();
+	s.root->func();
+	s.action_b.InRange = true;
+	std::cout << "*************" << std::endl;
+	s.root->func();
+	}
+
+	
 	system("pause");
 	return 0;
 }

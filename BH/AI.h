@@ -74,13 +74,9 @@ public:
 		Status status;
 		//check if its empty(no function stored)
 		if (callback)
-		{
 			status = callback();
-		}
 		else
-		{	//error no leaf
 			status = Status::FAILURE;
-		}
 		return status;
 	}
 };
@@ -133,3 +129,28 @@ public:
 	Status func();
 };
 
+
+class BT
+{
+private:
+	vector<Sequence> sequence;
+	vector<Selector> selector;
+	vector<Behavior> action;
+public:
+	Sequence& GetSequence() {
+		Sequence* temp = new Sequence();
+		sequence.emplace_back(*temp);
+		return *temp;
+	}
+	Selector& GetSelector() {
+		Selector* temp = new Selector();
+		selector.emplace_back(*temp);
+		return *temp;
+	}
+	Behavior& GetAction()
+	{
+		Behavior* temp = new Behavior();
+		action.emplace_back(*temp);
+		return *temp;
+	}
+};
