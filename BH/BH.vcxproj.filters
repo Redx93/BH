@@ -13,16 +13,28 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{c41a7f0a-234a-401d-9906-5120020c0916}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SaveSysteam">
+      <UniqueIdentifier>{43bd40ee-c6a1-41c4-ae7f-2ef507ecea81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviorTree.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
     <ClInclude Include="AI.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\AI</Filter>
     </ClInclude>
     <ClInclude Include="AI_Type.h">
+      <Filter>Header Files\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveSysteam.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BehaviorTree.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="DataSysteam.h">
+      <Filter>Header Files\SaveSysteam</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -36,6 +48,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BehaviorTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveSysteam.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

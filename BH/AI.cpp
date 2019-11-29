@@ -15,12 +15,18 @@ Status Sequence::func()
 
 	for (size_t i = 0; i < m_children.size() && 
 		status != Status::FAILURE &&// if fail dont go further down
-		status != Status::RUNNING ; i++) //if Running, we are not done with the task til its succeeded
+		status != Status::RUNNING &&
+		status != Status::WAIT	; i++) //if Running, we are not done with the task til its succeeded
 	{
 		Selector* selector = dynamic_cast<Selector*>(m_children[i]);
+		Randomize* random = dynamic_cast<Randomize*>(m_children[i]);
 		if (selector)
 		{
 			status = selector->func(); // safe to call
+		}
+		else if (random)
+		{
+			status = random->func(); // safe to call
 		}
 		else {//we got a leaf
 
@@ -42,28 +48,22 @@ at which point it will instantly return success. It will fail if all children fa
 
 Status Selector::func()
 {
-	/* 
-	for (auto c : m_children)
-	{
-		if (Sequence * se = dynamic_cast<Sequence*>(&c))
-		{
-			se->func(); // safe to call
-		}
-		else
-			c.execute();
-	}*/
-	//Set a default value on status
 	Status status = Status::INVALID;
-
 	for (size_t i = 0; i < m_children.size() &&
 		status != Status::SUCCESS &&// if we succeed lets return it
-		status != Status::RUNNING; i++) //if Running, we are not done with the task til its succeeded
+		status != Status::RUNNING &&
+		status != Status::WAIT	; i++) //if Running, we are not done with the task til its succeeded
 	{
 		Sequence* sequence = dynamic_cast<Sequence*>(m_children[i]);
+		//Randomize* random = dynamic_cast<Randomize*>(m_children[i]);
 		if (sequence)
 		{
 			status = sequence->func(); // safe to call
 		}
+		//else if (random)
+		//{
+		//	status = random->func(); // safe to call
+		//}
 		else {//we got a leaf
 
 			status = m_children[i]->execute();
@@ -71,4 +71,36 @@ Status Selector::func()
 
 	}
 	return status;
+}
+
+Status Randomize::func()
+{
+	/*	choses one out of the children to execute	*/
+
+	/*if we succeed the action*/
+	if(randomize != Status::SUCCESS)
+	{
+		Sequence* sequence = dynamic_cast<Sequence*>(m_children[index]);
+		Selector* selector = dynamic_cast<Selector*>(m_children[index]);
+		if (sequence)
+		{
+			randomize = sequence->func();
+		}
+		else if (selector)
+		{
+			randomize = selector->func();
+		}
+		else {
+
+			randomize = m_children[index]->execute();
+		}
+	}
+	if (randomize == Status::SUCCESS)
+	{
+		/*pick another random action to execute*/
+		index = rand() % m_children.size();
+		randomize = Status::RUNNING;// its still running 
+	}
+	
+	return randomize;
 }

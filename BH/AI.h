@@ -53,7 +53,8 @@ enum Status
 	INVALID,
 	RUNNING,
 	SUCCESS,
-	FAILURE
+	FAILURE,
+	WAIT,
 };
 using ActionCallback = std::function<Status()>;
 class Behavior
@@ -138,6 +139,37 @@ public:
 
 };
 
+class Randomize : public Behavior
+{
+private:
+	vector<Behavior*> m_children;
+	/*status on the random action */
+	Status randomize;
+	uint8_t index;
+public:
+	void AddChildren(Behavior& child)
+	{
+		m_children.emplace_back(&child);
+		randomize = Status::INVALID;
+		index = rand() % m_children.size();
+	}
+	Status func();
+	~Randomize()
+	{
+
+	}
+
+};
+
+
+struct WaitTimer
+{
+	float wait_time = 0;
+	float time_left = 0;
+	bool repeatable = false;
+};
+
+
 
 class BT
 {
@@ -145,6 +177,7 @@ private:
 	vector<Sequence*> sequence;
 	vector<Selector*> selector;
 	vector<Behavior*> action;
+	vector<Randomize*> random;
 public:
 	Sequence& GetSequence() {
 		Sequence* temp = new Sequence();
@@ -160,6 +193,12 @@ public:
 	{
 		Behavior* temp = new Behavior();
 		action.emplace_back(temp);
+		return *temp;
+	}
+	Randomize& GetRandom()
+	{
+		Randomize* temp = new Randomize();
+		random.emplace_back(temp);
 		return *temp;
 	}
 
@@ -182,6 +221,10 @@ public:
 			delete* pObj; // Note that this is deleting what pObj points to,
 						  // which is a pointer
 		}
-
+		for (vector<Randomize*>::iterator pObj = random.begin();
+			pObj != random.end(); ++pObj) {
+			delete* pObj; // Note that this is deleting what pObj points to,
+						  // which is a pointer
+		}
 	}
 };
