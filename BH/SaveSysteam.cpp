@@ -1,30 +1,35 @@
 #include "SaveSysteam.h"
 #include <fstream>
 #include <ostream>
+SaveSysteam* SaveSysteam::saveData = nullptr;
 
 SaveSysteam::SaveSysteam()
 {
-	ReadFromDisk();
-
+	read();
+	saveData = this;
 }
 SaveSysteam::~SaveSysteam()
 {
-
+	save();
 }
-
-
 
 void SaveSysteam::Set(std::string key, float value)
 {
-	SaveInteger[key] = value;
+	if (key != "")
+	{
+		SaveInteger[key] = value;
+	}
 }
 void SaveSysteam::Set(std::string key, std::string value)
 {
-	SaveString[key] = value;
+	if (key != "" && value != "")
+	{
+		SaveString[key] = value;
+	}
 }
 std::string SaveSysteam::GetString(std::string key)
 {
-	if (SaveString.count(key))
+	if (SaveString.count(key) && key != "")
 	{
 		return	this->SaveString.at(key);
 	}
@@ -44,13 +49,17 @@ float SaveSysteam::GetInteger(std::string key)
 		return 0;
 	}
 }
-void SaveSysteam::WriteToDisk(std::string filepath, bool reset)
+SaveSysteam* SaveSysteam::GetInstance()
+{
+	return saveData;
+}
+void SaveSysteam::save(std::string filepath, bool reset)
 {
 	std::ofstream myfile;
 	myfile.open(filepath);
 	myfile << SaveInteger.size() << std::endl;
 	myfile << SaveString.size() << std::endl;
-	
+
 	/*write to disk til we have nothing else to write*/
 	if (SaveString.size() > 0)
 	{
@@ -69,10 +78,10 @@ void SaveSysteam::WriteToDisk(std::string filepath, bool reset)
 	myfile.close();
 }
 
-void SaveSysteam::ReadFromDisk(std::string filepath)
+void SaveSysteam::read(std::string filepath)
 {
 	std::ifstream myfile(filepath);
-	if (myfile.is_open() && myfile.eof())
+	if (myfile.is_open() && !myfile.eof())
 	{
 		int iValue;
 		std::string	key;
@@ -81,7 +90,7 @@ void SaveSysteam::ReadFromDisk(std::string filepath)
 		int stringSize;
 		myfile >> intergerSize;
 		myfile >> stringSize;
-		
+
 		for (size_t i = 0; i < stringSize; i++)
 		{
 			myfile >> key >> sValue;

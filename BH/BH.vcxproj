@@ -133,8 +133,11 @@
     <ClCompile Include="AI.cpp" />
     <ClCompile Include="AI_Type.cpp" />
     <ClCompile Include="BehaviorTree.cpp" />
-    <ClCompile Include="ConsoleApplication1.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="SaveSysteam.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="file.data" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

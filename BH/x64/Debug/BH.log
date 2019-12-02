@@ -1,4 +1,6 @@
-﻿  ConsoleApplication1.cpp
-C:\Users\ala\Documents\GitHub\BH\BH\DataSysteam.h(37,34): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\ala\Documents\GitHub\BH\BH\DataSysteam.h(40,1): warning C4267:  'argument': conversion from 'size_t' to 'int', possible loss of data
-  BH.vcxproj -> C:\Users\ala\Documents\GitHub\BH\x64\Debug\BH.exe
+﻿  main.cpp
+C:\Users\AlaG\source\repos\BH\BH\DataSysteam.h(83,1): warning C4267:  'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\AlaG\source\repos\BH\BH\DataSysteam.h(84,23): warning C4244:  'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\AlaG\source\repos\BH\BH\DataSysteam.h(94,21): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\AlaG\source\repos\BH\BH\DataSysteam.h(97,1): warning C4267:  'argument': conversion from 'size_t' to 'int', possible loss of data
+  BH.vcxproj -> C:\Users\AlaG\source\repos\BH\x64\Debug\BH.exe
